@@ -1,29 +1,38 @@
 document.addEventListener("DOMContentLoaded", () => {
   const cards = document.querySelectorAll(".card");
+  let currentCard = 0; // Controla el orden
 
-  // Mensajes para las cartas
   const messages = [
-    "Espero la pases bien en este día, muak 💖",
-    "Cada día contigo es un regalo 🎁",
+    "Espero la pases bien en este día solecito, muak 💖",
+    "Eres mi más grande tesoro, cada día contigo es un regalo 🎁",
     "Siempre sabes como sacarme una sonrisa ✨",
     "El amor que siento por ti es infinito 💫",
-    "Y finalmente... ¿Quieres ser mi San Valentín? 💌",
+    "Y finalmente... Eres la mejor novia del mundo 💌",
   ];
 
-  // Asignar eventos a cada carta
+  const music = document.getElementById("bg-music");
+
+  // Quitar mute después de que cargue
+  window.addEventListener("load", () => {
+    music.muted = false;
+    music.volume = 0.4; // volumen suave romántico
+  });
+
   cards.forEach((card, index) => {
     card.addEventListener("click", () => {
-      // Si la carta ya está abierta, no hacer nada
+      // Solo permitir voltear la carta correcta
+      if (index !== currentCard) return;
+
+      // Si ya está abierta, no hacer nada
       if (card.classList.contains("flip")) return;
 
-      // Cargar el mensaje en la parte trasera antes de voltear la carta
       const back = card.querySelector(".back");
       back.textContent = messages[index];
 
-      // Voltear la carta
       card.classList.add("flip");
 
-      // Mostrar la animación en la parte trasera del mensaje
+      currentCard++; // Avanza a la siguiente carta
+
       if (index === messages.length - 1) {
         setTimeout(() => {
           alert("¡Feliz día de San Valentín! ❤️");
@@ -32,21 +41,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Crear la lluvia de corazones
   function createHeart() {
     const heart = document.createElement("div");
     heart.classList.add("heart");
     heart.textContent = "💖";
     heart.style.left = `${Math.random() * 100}vw`;
-    heart.style.animationDuration = `${Math.random() * 2 + 2}s`; // Duración aleatoria entre 2 y 4 segundos
+    heart.style.animationDuration = `${Math.random() * 2 + 2}s`;
     document.querySelector(".heart-rain").appendChild(heart);
 
-    // Eliminar el corazón después de que termine la animación
     setTimeout(() => {
       heart.remove();
     }, 4000);
   }
 
-  // Generar corazones a intervalos aleatorios
   setInterval(createHeart, 300);
 });
